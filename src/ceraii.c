@@ -1,11 +1,13 @@
 #include "ceraii.h"
 
 #ifdef __GNUG__
+
 #ifdef __clang__
 #define ERAII_THREAD_LOCAL _Thread_local
 #else
 #define ERAII_THREAD_LOCAL __thread
 #endif /* ifdef __clang__ */
+
 #else
 #define ERAII_THREAD_LOCAL _Thread_local
 #endif /* ifdef __GNUG__ */

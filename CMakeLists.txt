@@ -2,7 +2,7 @@ cmake_minimum_required (VERSION 2.6)
 project (CERAII)
 
 set(CERAII_SOURCES src/ceraii.c)
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall --std=c99")
 
 include_directories(src)
 
