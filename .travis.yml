@@ -1,6 +1,5 @@
 language: C
 sudo: false
-dist: trusty
 matrix:
   include:
     - os: linux
@@ -10,14 +9,12 @@ matrix:
 script:
   # Print all environment variables to aid in CI development
   - printenv
-  - cc --version
   # Print version and available CMake generators to aid in CI development
   - cmake --version
   - cmake --help
   # Perform out-of-source build
   - cd build
   # Perform CMake backend generation, build, and test
-  - gcc -c ../dummy.c
   - cmake ..
   - cmake --build . --target all 
   - ls

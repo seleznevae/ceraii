@@ -18,27 +18,8 @@ extern "C"
 #endif /* ifdef __clang__ */
 
 
-//#ifdef __GNUC__
-
-//#ifdef __clang__
-//#define ERAII_THREAD_LOCAL _Thread_local  // clang
-//#else
-
-//#ifdef __cplusplus
-//#define ERAII_THREAD_LOCAL __thread       // g++
-//#else
-//#define ERAII_THREAD_LOCAL __thread       // gcc
-//#endif /* ifdef __cplusplus */
-
-//#endif /* ifdef __clang__ */
-
-//#else
-//#define ERAII_THREAD_LOCAL _Thread_local  // others
-//#endif /* ifdef __GNUG__ */
 
 
-static __thread int kkk1;
-static ERAII_THREAD_LOCAL int kkk2;
 
 static ERAII_THREAD_LOCAL  struct stack_return_item stack_items[ERAII_ENV_STACK_SIZE];
 static ERAII_THREAD_LOCAL  struct stack_return_item return_caller;
