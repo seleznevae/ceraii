@@ -17,7 +17,6 @@ script:
 
   # Perform out-of-source build(CMake backend generation, build, and test)
   # Test build without optimizations
-  - rm -r build/*
   - cd build
   - cmake .. -DCERAII_TEST_BUILD=ON -DCERAII_CLANG_BUILD=${CLANG_BUILD} -DCERAII_PERF_OPTIMIZED_BUILD=OFF
   - cmake --build . --target all 
