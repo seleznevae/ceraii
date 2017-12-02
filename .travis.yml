@@ -14,7 +14,16 @@ script:
   - cmake --help
   # Perform out-of-source build
   - cd build
-  # Perform CMake backend generation, build, and test
+  # Perform CMake backend generation, build, and test (CERAII test build)
+  - cmake .. -DCERAII_TEST_BUILD=ON
+  - cmake --build . --target all 
+  - ls
+  - ./test_basic
+  - ./test_multithread
+  # Perform CMake backend generation, build, and test (CERAII production build)
+  - cd ..  -DCERAII_TEST_BUILD=OFF
+  - rm -r build/*
+  - cd build
   - cmake ..
   - cmake --build . --target all 
   - ls
