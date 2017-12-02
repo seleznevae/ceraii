@@ -19,7 +19,7 @@ script:
   # Test build without optimizations
   - rm -r build/*
   - cd build
-  - cmake .. -DCERAII_TEST_BUILD=ON -DCERAII_CLANG_BUILD=${CLANG_BUILD} -CERAII_PERF_OPTIMIZED_BUILD=OFF
+  - cmake .. -DCERAII_TEST_BUILD=ON -DCERAII_CLANG_BUILD=${CLANG_BUILD} -DCERAII_PERF_OPTIMIZED_BUILD=OFF
   - cmake --build . --target all 
   - ls
   - ./test_basic
@@ -27,7 +27,7 @@ script:
   # Test build with optimizations
   - rm -r build/*
   - cd build
-  - cmake .. -DCERAII_TEST_BUILD=ON -DCERAII_CLANG_BUILD=${CLANG_BUILD} -CERAII_PERF_OPTIMIZED_BUILD=ON
+  - cmake .. -DCERAII_TEST_BUILD=ON -DCERAII_CLANG_BUILD=${CLANG_BUILD} -DCERAII_PERF_OPTIMIZED_BUILD=ON
   - cmake --build . --target all 
   - ls
   - ./test_basic
@@ -36,7 +36,7 @@ script:
   - cd ..  
   - rm -r build/*
   - cd build
-  - cmake .. -DCERAII_TEST_BUILD=OFF -DCERAII_CLANG_BUILD=${CLANG_BUILD} -CERAII_PERF_OPTIMIZED_BUILD=OFF
+  - cmake .. -DCERAII_TEST_BUILD=OFF -DCERAII_CLANG_BUILD=${CLANG_BUILD} -DCERAII_PERF_OPTIMIZED_BUILD=OFF
   - cmake --build . --target all 
   - ls
   - ./test_basic
@@ -45,7 +45,7 @@ script:
   - cd ..  
   - rm -r build/*
   - cd build
-  - cmake .. -DCERAII_TEST_BUILD=OFF -DCERAII_CLANG_BUILD=${CLANG_BUILD} -CERAII_PERF_OPTIMIZED_BUILD=ON
+  - cmake .. -DCERAII_TEST_BUILD=OFF -DCERAII_CLANG_BUILD=${CLANG_BUILD} -DCERAII_PERF_OPTIMIZED_BUILD=ON
   - cmake --build . --target all 
   - ls
   - ./test_basic
