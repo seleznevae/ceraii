@@ -180,7 +180,12 @@ int main(int argc, char *argv[])
     pthread_join(thread_2, NULL);
     pthread_join(thread_1, NULL);
 
+    int arr[10];
+    arr[0] = 5;
+    arr[10] = 5;
     int* arg = (int*)malloc(10);
-    *arg = 10;
+    *arg = arr[10];
+    printf("asdf\n");
+
     return 0;
 }
