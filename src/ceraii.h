@@ -3,6 +3,13 @@
 
 #include <setjmp.h>
 
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 /**
  * Configuration parameters
  */
@@ -125,6 +132,11 @@ do {\
 
 
 
+
+
+#ifdef __cplusplus
+}
+#endif
 
 
 #endif // ERAII_H
