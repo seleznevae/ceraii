@@ -5,6 +5,8 @@ option(CERAII_TEST_BUILD "Test build with sanitizers" ON)
 option(CERAII_CLANG_BUILD "Build with clang" OFF)
 option(CERAII_PERF_OPTIMIZED_BUILD "Build with turned on optimizations" OFF)
 
+option(CERAII_COVERALLS_BUILD "Build for coveralls" OFF)
+
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
 
@@ -35,3 +37,11 @@ if(CERAII_TEST_BUILD)
         target_link_libraries(test_basic asan)
     endif(NOT CERAII_CLANG_BUILD)
 endif(CERAII_TEST_BUILD)
+
+
+
+if(CERAII_COVERALLS_BUILD) #for coveralls
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -fprofile-arcs -ftest-coverage")
+endif(CERAII_COVERALLS_BUILD)
+
+

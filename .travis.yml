@@ -5,9 +5,16 @@ matrix:
     - os: linux
       compiler: gcc
       env: CLANG_BUILD=OFF
+      before_script:
+        - pip install --user cpp-coveralls
+      after_success:
+        - coveralls --build-root build --include src --include tests  --gcov-options '\-lp'
     - os: linux
       compiler: clang
       env: CLANG_BUILD=ON
+
+
+
 script:
   # Print all environment variables to aid in CI development
   - printenv
@@ -50,3 +57,19 @@ script:
   - ls
   - ./test_basic
   - ./test_multithread
+  # Build for coveralls
+  - cd ..  
+  # - rm -r build/*
+  - cd build
+  - if [ ${CLANG_BUILD} == 'OFF' ];
+    then
+    cd ..  ;
+    rm -r build/* ;
+    cd build ;
+    cmake .. -DCERAII_COVERALLS_BUILD=ON -DCERAII_TEST_BUILD=ON -DCERAII_CLANG_BUILD=${CLANG_BUILD} -DCERAII_PERF_OPTIMIZED_BUILD=OFF ;
+    cmake --build . --target all ;
+    ls ;
+    ./test_basic ;
+    ./test_multithread ;
+    fi
+  - cd ..
