@@ -1,0 +1,20 @@
+language: c
+sudo: false
+matrix:
+  include:
+    - os: linux
+      compiler: gcc
+    - os: linux
+      compiler: clang
+script:
+  # Print all environment variables to aid in CI development
+  - printenv
+  # Print version and available CMake generators to aid in CI development
+  - cmake --version
+  - cmake --help
+  # Perform out-of-source build
+  - cd build
+  # Perform CMake backend generation, build, and test
+  - cmake ..
+  - cmake --build . --target all -j4
+  - ls
