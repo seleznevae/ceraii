@@ -25,6 +25,7 @@ script:
   - ./test_basic
   - ./test_multithread
   # Test build with optimizations
+  - cd ..
   - rm -r build/*
   - cd build
   - cmake .. -DCERAII_TEST_BUILD=ON -DCERAII_CLANG_BUILD=${CLANG_BUILD} -DCERAII_PERF_OPTIMIZED_BUILD=ON
