@@ -1,7 +1,14 @@
 #include "ceraii.h"
 
-
+#ifdef __GNUG__
+#ifdef __clang__
 #define ERAII_THREAD_LOCAL _Thread_local
+#else
+#define ERAII_THREAD_LOCAL __thread
+#endif /* ifdef __clang__ */
+#else
+#define ERAII_THREAD_LOCAL _Thread_local
+#endif /* ifdef __GNUG__ */
 
 static ERAII_THREAD_LOCAL  struct stack_return_item stack_items[ERAII_ENV_STACK_SIZE];
 static ERAII_THREAD_LOCAL  struct stack_return_item return_caller;

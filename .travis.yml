@@ -18,3 +18,5 @@ script:
   - cmake ..
   - cmake --build . --target all 
   - ls
+  - ./test_basic
+  - ./test_multithread
