@@ -43,7 +43,8 @@ void* thread_1_func(void *arg)
 {
     (void)arg;
     int thread_nuber = 0;
-    for (size_t i = 0; i < NUMBER_OF_ITERATIONS; ++i) {
+    size_t i = 0;
+    for (i = 0; i < NUMBER_OF_ITERATIONS; ++i) {
         marker1[thread_nuber] = 0;
         marker2[thread_nuber] = 0;
         marker3[thread_nuber] = 0;
@@ -60,7 +61,8 @@ void* thread_2_func(void *arg)
 {
     (void)arg;
     int thread_nuber = 1;
-    for (size_t i = 0; i < NUMBER_OF_ITERATIONS; ++i) {
+    size_t i = 0;
+    for (i = 0; i < NUMBER_OF_ITERATIONS; ++i) {
         marker1[thread_nuber] = 0;
         marker2[thread_nuber] = 0;
         marker3[thread_nuber] = 0;
@@ -77,7 +79,8 @@ void* thread_3_func(void *arg)
 {
     (void)arg;
     int thread_nuber = 2;
-    for (size_t i = 0; i < NUMBER_OF_ITERATIONS; ++i) {
+    size_t i = 0;
+    for (i = 0; i < NUMBER_OF_ITERATIONS; ++i) {
         marker1[thread_nuber] = 0;
         marker2[thread_nuber] = 0;
         marker3[thread_nuber] = 0;
@@ -94,7 +97,8 @@ void* thread_3_func(void *arg)
 void* thread_func(void *arg)
 {
     int thread_number = *(int*)arg;
-    for (size_t i = 0; i < 100/*NUMBER_OF_ITERATIONS*/; ++i) {
+    size_t i = 0;
+    for (i = 0; i < NUMBER_OF_ITERATIONS; ++i) {
         marker1[thread_number] = 0;
         marker2[thread_number] = 0;
         marker3[thread_number] = 0;
