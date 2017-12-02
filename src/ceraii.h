@@ -85,17 +85,19 @@ int* get_raii_objects_counter();
  */
 
 #define DO_AT_EXIT_(actions, setjump_ret_name, index_name) \
+do {\
     int setjump_ret_name; \
     int index_name = (*get_raii_objects_counter())++; \
     FILL_SIGNATURE((*get_stack_item(index_name)).signature_); \
     (*get_stack_item(index_name)).index_ = index_name; \
     setjump_ret_name = setjmp(get_stack_item(index_name)->env_); \
     if (setjump_ret_name) {\
-        printf("Actions at exit\n");\
+        /*printf("Actions at exit\n");*/ \
         actions \
         (*get_raii_objects_counter())--; \
         GO_TO_PREVIOS_LABEL_OR_RETURN_TO_CALLER((*get_stack_item(*get_raii_objects_counter())));\
-    }
+    }\
+} while (0)
 
 #define DO_AT_EXIT(actions) \
     DO_AT_EXIT_(actions, UNIQUE_RAII_NAME(val_eraii), UNIQUE_RAII_NAME(index_eraii))
@@ -111,7 +113,7 @@ int* get_raii_objects_counter();
         setjump_ret_name = setjmp(get_stack_item(index_name)->env_); \
         memcpy(get_return_caller(), get_stack_item(index_name), sizeof(struct stack_return_item)); \
         if (setjump_ret_name) {\
-            printf("Returning value\n");\
+            /*printf("Returning value\n");*/\
             return return_value; \
         } \
         (*get_raii_objects_counter())--; \

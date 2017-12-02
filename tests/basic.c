@@ -2,85 +2,226 @@
 #include <string.h>
 #include "ceraii.h"
 #include <stdlib.h>
+#include <assert.h>
 
+int marker1 = 0;
+int marker2 = 0;
+int marker3 = 0;
 
-
-int factorial(int value)
+int base_return_10()
 {
-    DO_AT_EXIT(
-        printf("Returning from factorial invoked with value %d\n", value);
-    );
-    if (value == 0 || value == 1) {
-        RETURN(1);
+    assert(marker1 == 0);
+    DO_AT_EXIT(marker1 = 1;);
+
+    // Imitating some work
+    int i = 0;
+    for (i = 0; i < 10; ++i)
+        ;
+
+    RETURN(i);
+}
+
+int base_multiple_return_10()
+{
+    assert(marker1 == 0);
+    assert(marker2 == 0);
+    assert(marker3 == 0);
+
+    DO_AT_EXIT(marker1 = 1;);
+    // Imitating some work
+    int i = 0;
+    for (i = 0; i < 10; ++i)
+        ;
+
+    DO_AT_EXIT(marker2 = 2;);
+    // Imitating some work
+    for (i = 0; i < 10; ++i)
+        ;
+
+    DO_AT_EXIT(marker3 = 3;);
+    // Imitating some work
+    for (i = 0; i < 10; ++i)
+        ;
+
+    RETURN(i);
+}
+
+int base_without_macros_return_10()
+{
+    assert(marker1 == 0);
+
+    // Imitating some work
+    int i = 0;
+    for (i = 0; i < 10; ++i)
+        ;
+
+    RETURN(i);
+}
+
+
+int base_if_return_10(int branch)
+{
+    assert(marker1 == 0);
+    assert(marker2 == 0);
+    assert(marker3 == 0);
+
+    DO_AT_EXIT(marker1 = 1;);
+    // Imitating some work
+    int i = 0;
+    for (i = 0; i < 10; ++i)
+        ;
+
+    if (branch) {
+        DO_AT_EXIT(marker2 = 2;);
+        // Imitating some work
+        for (i = 0; i < 10; ++i)
+            ;
+    } else {
+        DO_AT_EXIT(marker3 = 3;);
+        // Imitating some work
+        for (i = 0; i < 10; ++i)
+            ;
     }
 
-    int ret = value * factorial(value - 1);
-    printf("Factorial body invoked with value %d\n", value);
-    RETURN(ret);
+    RETURN(i);
 }
 
-
-
-//char *copy_string(const char *str)
-//{
-//    char *result = malloc(strlen(str) + 1);
-//    DO_AT_EXIT(
-//        free(result);
-//    );
-
-//    if (result == NULL) {
-//        RETURN(NULL);
-//    }
-
-//    strcpy(result, str);
-
-//    if (1) { /* if something wrong */
-//        RETURN(NULL);
-//    } else { /*if everything is ok */
-//        char *tmp = result;
-//        result = NULL;
-//        RETURN(tmp);
-//    }
-//}
-
-
-
-int empty_function()
+int base_switch_return_10(int switch_value)
 {
-   printf("Empty function body\n");
-   RETURN(1);
+    assert(marker1 == 0);
+    assert(marker2 == 0);
+    assert(marker3 == 0);
+
+    int i = 0;
+    switch (switch_value) {
+        case 1:
+            DO_AT_EXIT(marker1 = 1;);
+            // Imitating some work
+            for (i = 0; i < 10; ++i)
+                ;
+            break;
+        case 2:
+            DO_AT_EXIT(marker2 = 2;);
+            // Imitating some work
+            for (i = 0; i < 10; ++i)
+                ;
+            break;
+
+        case 3:
+            DO_AT_EXIT(marker3 = 3;);
+            // Imitating some work
+            for (i = 0; i < 10; ++i)
+                ;
+            break;
+    }
+
+    RETURN(i);
 }
+
+
+
 
 int main(int argc, char *argv[])
 {
     (void)argc;
     (void)argv;
-    int a = 3;
-    DO_AT_EXIT(
-        printf("Hello, world!\n");
-    );
-    if (0) {
-        DO_AT_EXIT(
-            printf("Hello, world2!\n");
-        );
-    } else {
-        DO_AT_EXIT(
-            printf("Hello, world3!\n");
-        );
-    }
+
+    int result = 0;
+
+    /*
+     *  Base check
+     */
+    marker1 = 0;
+    result = base_return_10();
+    assert(result == 10);
+    assert(marker1 == 1);
+
+    /*
+     * Base check with multiple macros
+     */
+    marker1 = 0;
+    marker2 = 0;
+    marker3 = 0;
+    result = base_multiple_return_10();
+    assert(result == 10);
+    assert(marker1 == 1);
+    assert(marker2 == 2);
+    assert(marker3 == 3);
 
 
-//    factorial(3);
-//    printf("--------------------\n");
-//    empty_function();
-//    printf("--------------------\n");
-//    factorial(5);
-//    printf("--------------------\n");
+    /*
+     * Base check with RETURN but without DO... macros
+     */
+    marker1 = 0;
+    marker2 = 0;
+    marker3 = 0;
+    result = base_without_macros_return_10();
+    assert(result == 10);
+    assert(marker1 == 0);
+    assert(marker2 == 0);
+    assert(marker3 == 0);
 
-    printf("return address %p\n", __builtin_return_address(0));
-    printf("frame address %p\n", __builtin_frame_address(0));
-    printf("sizeof(jmp_buf) %d\n", (int)sizeof(jmp_buf));
 
-    RETURN(a);
-//    return a;
+    /*
+     * Base check with conditionals
+     */
+    marker1 = 0;
+    marker2 = 0;
+    marker3 = 0;
+    result = base_if_return_10(1);
+    assert(result == 10);
+    assert(marker1 == 1);
+    assert(marker2 == 2);
+    assert(marker3 == 0);
+
+    marker1 = 0;
+    marker2 = 0;
+    marker3 = 0;
+    result = base_if_return_10(0);
+    assert(result == 10);
+    assert(marker1 == 1);
+    assert(marker2 == 0);
+    assert(marker3 == 3);
+
+
+    /*
+     * Base check with switch
+     */
+    marker1 = 0;
+    marker2 = 0;
+    marker3 = 0;
+    result = base_switch_return_10(0);
+    assert(result == 0);
+    assert(marker1 == 0);
+    assert(marker2 == 0);
+    assert(marker3 == 0);
+
+    marker1 = 0;
+    marker2 = 0;
+    marker3 = 0;
+    result = base_switch_return_10(1);
+    assert(result == 10);
+    assert(marker1 == 1);
+    assert(marker2 == 0);
+    assert(marker3 == 0);
+
+    marker1 = 0;
+    marker2 = 0;
+    marker3 = 0;
+    result = base_switch_return_10(2);
+    assert(result == 10);
+    assert(marker1 == 0);
+    assert(marker2 == 2);
+    assert(marker3 == 0);
+
+    marker1 = 0;
+    marker2 = 0;
+    marker3 = 0;
+    result = base_switch_return_10(3);
+    assert(result == 10);
+    assert(marker1 == 0);
+    assert(marker2 == 0);
+    assert(marker3 == 3);
+
+    return 0;
 }
