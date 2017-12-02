@@ -16,5 +16,5 @@ script:
   - cd build
   # Perform CMake backend generation, build, and test
   - cmake ..
-  - cmake --build . --target all -j4
+  - cmake --build . --target all 
   - ls
