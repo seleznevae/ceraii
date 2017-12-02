@@ -4,8 +4,10 @@ matrix:
   include:
     - os: linux
       compiler: gcc
+      env: CLANG_BUILD=OFF
     - os: linux
       compiler: clang
+      env: CLANG_BUILD=ON
 script:
   # Print all environment variables to aid in CI development
   - printenv
@@ -15,16 +17,16 @@ script:
   # Perform out-of-source build
   - cd build
   # Perform CMake backend generation, build, and test (CERAII test build)
-  - cmake .. -DCERAII_TEST_BUILD=ON
+  - cmake .. -DCERAII_TEST_BUILD=ON -DCERAII_CLANG_BUILD=${CLANG_BUILD}
   - cmake --build . --target all 
   - ls
   - ./test_basic
   - ./test_multithread
   # Perform CMake backend generation, build, and test (CERAII production build)
-  - cd ..  -DCERAII_TEST_BUILD=OFF
+  - cd ..  
   - rm -r build/*
   - cd build
-  - cmake ..
+  - cmake .. -DCERAII_TEST_BUILD=OFF -DCERAII_CLANG_BUILD=${CLANG_BUILD}
   - cmake --build . --target all 
   - ls
   - ./test_basic
