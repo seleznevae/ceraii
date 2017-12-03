@@ -69,7 +69,7 @@ void func(const char *str)
     RETURN();
 }
 ```
-After that it will be much easier to maintain code. For example it is needed to log all envocations of free at the end of the functions, all you need is add printf to the _FREE_AT_EXIT_ definition:
+After that it will be much easier to maintain code. For example if it is needed to log all envocations of free at the end of the functions, all you need is add _printf_ to the _FREE_AT_EXIT_ definition:
 ```C
 #define FREE_AT_EXIT(pointer) \
     DO_AT_EXIT(\
