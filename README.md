@@ -11,7 +11,7 @@ There are two main ways to deal with these problems in different programmin lang
 The goal of **CERAII** is in some sense to combine these two methods: releasing code should be near code that allocates resources and it should be explicit for anybody who reads the code how resources are released. 
 Example of code with CERAII:
 
-```
+```C
 #include <malloc.h>
 #include "ceraii.h"
 
