@@ -15,25 +15,25 @@ Example of code with CERAII:
 #include <malloc.h>
 #include "ceraii.h"
 
-void func(const char *str)
+int func()
 {
-    char *str_copy = (char*)malloc(strlen(str) + 1);
-    DO_AT_EXIT(free(str_copy));  /* Explicit declaration of what should be done before exit from the function */
+    int *pi = (int*)malloc(sizeof(int));
+    DO_AT_EXIT(free(pi));  /* Explicit declaration of what should be done before exit from the function */
     
-    if (str_copy == NULL) 
-        RETURN();
+    if (pi == NULL) 
+        RETURN(1);
 
     /* some code with multiple returns */
     
     if (some_condition) {
         /* --- */
-        RETURN();
+        RETURN(2);
     } else if (another_condition) {
         /* --- */
-        RETURN();
+        RETURN(3);
     }
 
-    RETURN();
+    RETURN(0);
 }
 ```
 No matter how many returns you have in your code, statements in  **DO_AT_EXIT** macro will be automatically done before returning from the function. All you need is 2 macros: 
@@ -48,25 +48,25 @@ You can specify your own macros based on DO_AT_EXIT for most cases. For case abo
 #define FREE_AT_EXIT(pointer) \
     DO_AT_EXIT(free(pointer);)
     
-void func(const char *str)
+int func()
 {
-    char *str_copy = (char*)malloc(strlen(str) + 1);
-    FREE_AT_EXIT(str_copy);  
+    int *pi = (int*)malloc(sizeof(int));
+    FREE_AT_EXIT(pi);  
     
-    if (str_copy == NULL) 
-        RETURN();
+    if (pi == NULL) 
+        RETURN(1);
 
     /* some code with multiple returns */
     
     if (some_condition) {
         /* --- */
-        RETURN();
+        RETURN(2);
     } else if (another_condition) {
         /* --- */
-        RETURN();
+        RETURN(3);
     }
 
-    RETURN();
+    RETURN(0);
 }
 ```
 After that it will be much easier to maintain code. For example if it is needed to log all envocations of free at the end of the functions, all you need is add _printf_ to the _FREE_AT_EXIT_ definition:
