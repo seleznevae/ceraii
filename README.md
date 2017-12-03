@@ -80,15 +80,15 @@ After that it will be much easier to maintain code. For example if it is needed 
 Some other common macros that can be defined based **DO_AT_EXIT** macro:
 
 ```C
-/* Free pointers allocated with malloc, calloc, realloc */
+/* Automatically free pointers allocated with malloc, calloc, realloc at exit*/
 #define FREE_AT_EXIT(pointer) \
     DO_AT_EXIT(free(pointer);)
     
-/* Unlock pthread mutex */
+/* Automatically unlock pthread mutex at exit*/
 #define UNLOCK_AT_EXIT(mutex) \
     DO_AT_EXIT(pthread_mutex_unlock(mutex);)
     
-/* Close file */
+/* Automatically close file at exit*/
 #define CLOSE_AT_EXIT(file_p) \
     DO_AT_EXIT(fclose(file_p);)
 
