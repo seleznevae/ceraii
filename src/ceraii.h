@@ -2,6 +2,7 @@
 #define ERAII_H
 
 #include <setjmp.h>
+#include <string.h>
 
 
 #ifdef __cplusplus
@@ -111,6 +112,17 @@ do {\
 
 #define DO_AT_EXIT(actions) \
     DO_AT_EXIT_(actions, UNIQUE_RAII_NAME(index_eraii))
+
+
+#define DO_AT_SCOPE_EXIT_(actions, tmp_var_name, destructor_name) \
+    void destructor_name(void *arg) { \
+        (void)arg; \
+        actions \
+    } \
+    int tmp_var_name __attribute__ ((__cleanup__(destructor_name))) = 1;
+
+#define DO_AT_SCOPE_EXIT(actions) \
+    DO_AT_SCOPE_EXIT_(actions, UNIQUE_RAII_NAME(tmp_var),  UNIQUE_RAII_NAME(destructor_func))
 
 
 
