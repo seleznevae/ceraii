@@ -58,6 +58,12 @@ int* get_raii_objects_counter();
     UNIQUE_RAII_NAME_(prefix)
 
 /**
+ *  Implementation specific macros
+ */
+
+#define CERAII_TYPE_OF(arg) __typeof__(arg)
+
+/**
  * Main helper macros
  */
 
@@ -110,7 +116,7 @@ do {\
 
 #define RETURN_(return_value, index_name, return_name) \
     do { \
-        typeof(return_value) return_name = (return_value); \
+        CERAII_TYPE_OF(return_value) return_name = (return_value); \
         int index_name = (*get_raii_objects_counter())++; \
         FILL_SIGNATURE((*get_stack_item(index_name)).signature_); \
         (*get_stack_item(index_name)).index_ = index_name; \
