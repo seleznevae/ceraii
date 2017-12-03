@@ -40,7 +40,7 @@ No matter how many returns you have in your code, statements in  **DO_AT_EXIT** 
 - **DO_AT_EXIT** to declare actions before return from the function
 - **RETURN** macros instead of **return** key word 
 
-You can specify your own macros based on DO_AT_EXIT for most cases. For case above:
+For the most frequent cases of resource releasing it is preferred to define your own macros based on DO_AT_EXIT. For the case above:
 ```C
 #include <malloc.h>
 #include "ceraii.h"
@@ -76,4 +76,20 @@ After that it will be much easier to maintain code. For example if it is needed 
         printf("Pointer %p is being freed\n", pointer);
         free(pointer);\
     )\
+```
+Some other common macros that can be defined based **DO_AT_EXIT** macro:
+
+```C
+/* Free pointers allocated with malloc, calloc, realloc */
+#define FREE_AT_EXIT(pointer) \
+    DO_AT_EXIT(free(pointer);)
+    
+/* Unlock pthread mutex */
+#define UNLOCK_AT_EXIT(mutex) \
+    DO_AT_EXIT(pthread_mutex_unlock(mutex);)
+    
+/* Close file */
+#define CLOSE_AT_EXIT(file_p) \
+    DO_AT_EXIT(fclose(file_p);)
+
 ```
