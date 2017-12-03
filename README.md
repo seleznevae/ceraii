@@ -18,7 +18,7 @@ Example of code with CERAII:
 void func(const char *str)
 {
     char *str_copy = (char*)malloc(strlen(str) + 1);
-    DO_AT_EXIT(free(str_copy));
+    DO_AT_EXIT(free(str_copy));  /* Explicit declaration of what should be done before exit from the function */
     
     if (str_copy == NULL) 
         RETURN();
@@ -36,4 +36,6 @@ void func(const char *str)
     RETURN();
 }
 ```
-No matter how many returns you have in your code, statements in  DO_AT_EXIT macro will be automatically done before exiting the function.
+No matter how many returns you have in your code, statements in  **DO_AT_EXIT** macro will be automatically done before returning from the function. All you need is 2 macros: 
+- **DO_AT_EXIT** to declare actions before return from the function
+- **RETURN** macros instead of **return** key word 
