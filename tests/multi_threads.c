@@ -3,6 +3,9 @@
 #include "ceraii.h"
 #include <stdlib.h>
 #include <assert.h>
+
+#if (defined(CERAII_GCC_COMPILER) || defined(CERAII_CLANG_COMPILER))
+
 #include <pthread.h>
 
 #define NUMBER_OF_ITERATIONS  1000000
@@ -182,3 +185,14 @@ int main(int argc, char *argv[])
 
     return 0;
 }
+
+#else
+int main(int argc, char *argv[])
+{
+    (void)argc;
+    (void)argv;
+
+    return (0);
+}
+
+#endif // (defined(CERAII_GCC_COMPILER) || defined(CERAII_GCC_COMPILER))

@@ -4,6 +4,9 @@
 #include <stdlib.h>
 #include <assert.h>
 
+
+
+
 int marker1 = 0;
 int marker2 = 0;
 int marker3 = 0;
@@ -179,10 +182,12 @@ int main(int argc, char *argv[])
     /*
      *  Base check that DO_AT_EXIT is executed after evaluation of statement in RETURN
      */
+#if (defined(CERAII_GCC_COMPILER) || defined(CERAII_CLANG_COMPILER))
     marker1 = 0;
     result = base_modified_return_10();
     assert(result == 10);
     assert(marker1 == 1);
+#endif
 
     /*
      * Base check with multiple actions in one DO_AT_EXIT macro
@@ -286,3 +291,4 @@ int main(int argc, char *argv[])
 
     return 0;
 }
+
