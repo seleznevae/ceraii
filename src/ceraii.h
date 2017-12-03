@@ -97,7 +97,6 @@ do {\
     FILL_SIGNATURE((*get_stack_item(index_name)).signature_); \
     (*get_stack_item(index_name)).index_ = index_name; \
     if (setjmp(get_stack_item(index_name)->env_)) {\
-        /*printf("Actions at exit\n");*/ \
         actions \
         (*get_raii_objects_counter())--; \
         GO_TO_PREVIOS_LABEL_OR_RETURN_TO_CALLER((*get_stack_item(*get_raii_objects_counter())));\
@@ -109,14 +108,14 @@ do {\
 
 
 
-#define RETURN_(return_value, index_name) \
+#define RETURN_(return_value, index_name, return_name) \
     do { \
+        typeof(return_value) return_name = (return_value); \
         int index_name = (*get_raii_objects_counter())++; \
         FILL_SIGNATURE((*get_stack_item(index_name)).signature_); \
         (*get_stack_item(index_name)).index_ = index_name; \
         if (setjmp(get_stack_item(index_name)->env_)) {\
-            /*printf("Returning value\n");*/\
-            return return_value; \
+            return return_name; \
         } \
         memcpy(get_return_caller(), get_stack_item(index_name), sizeof(struct stack_return_item)); \
         (*get_raii_objects_counter())--; \
@@ -124,7 +123,7 @@ do {\
     } while(0)
 
 #define RETURN(return_value) \
-    RETURN_(return_value, UNIQUE_RAII_NAME(index_eraii))
+    RETURN_(return_value, UNIQUE_RAII_NAME(index_eraii), UNIQUE_RAII_NAME(return_eraii))
 
 
 
