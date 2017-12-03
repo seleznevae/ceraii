@@ -40,13 +40,25 @@ No matter how many returns you have in your code, statements in  **DO_AT_EXIT** 
 - **DO_AT_EXIT** to declare actions before return from the function
 - **RETURN** macros instead of **return** key word 
 
-For the most frequent cases of resource releasing it is preferred to define your own macros based on DO_AT_EXIT. For the case above:
+# Defining custom macros
+
+For the most frequent cases of resource releasing it is preferred to define your own macros based on DO_AT_EXIT. 
+Here are some examples:
 ```C
 #include <malloc.h>
 #include "ceraii.h"
 
+/* Automatically free pointers allocated with malloc, calloc, realloc at exit*/
 #define FREE_AT_EXIT(pointer) \
     DO_AT_EXIT(free(pointer);)
+    
+/* Automatically unlock pthread mutex at exit*/
+#define UNLOCK_AT_EXIT(mutex) \
+    DO_AT_EXIT(pthread_mutex_unlock(mutex);)
+    
+/* Automatically close file at exit*/
+#define CLOSE_AT_EXIT(file_p) \
+    DO_AT_EXIT(fclose(file_p);)
     
 int func()
 {
@@ -55,15 +67,10 @@ int func()
     
     if (pi == NULL) 
         RETURN(1);
-
-    /* some code with multiple returns */
-    
+   
     if (some_condition) {
         /* --- */
         RETURN(2);
-    } else if (another_condition) {
-        /* --- */
-        RETURN(3);
     }
 
     RETURN(0);
@@ -77,19 +84,4 @@ After that it will be much easier to maintain code. For example if it is needed 
         free(pointer);\
     )\
 ```
-Some other common macros that can be defined based **DO_AT_EXIT** macro:
 
-```C
-/* Automatically free pointers allocated with malloc, calloc, realloc at exit*/
-#define FREE_AT_EXIT(pointer) \
-    DO_AT_EXIT(free(pointer);)
-    
-/* Automatically unlock pthread mutex at exit*/
-#define UNLOCK_AT_EXIT(mutex) \
-    DO_AT_EXIT(pthread_mutex_unlock(mutex);)
-    
-/* Automatically close file at exit*/
-#define CLOSE_AT_EXIT(file_p) \
-    DO_AT_EXIT(fclose(file_p);)
-
-```
