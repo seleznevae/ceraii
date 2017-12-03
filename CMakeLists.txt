@@ -20,7 +20,7 @@ add_executable(test_basic tests/basic.c ${CERAII_SOURCES})
 add_executable(test_multithread tests/multi_threads.c ${CERAII_SOURCES})
 target_link_libraries(test_multithread pthread)
 
-
+add_executable(example examples/example.c ${CERAII_SOURCES})
 
 
 if(CERAII_PERF_OPTIMIZED_BUILD)
