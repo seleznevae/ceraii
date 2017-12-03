@@ -4,7 +4,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/seleznevae/ceraii/badge.svg?branch=master)](https://coveralls.io/github/seleznevae/ceraii?branch=master)
 
 In software projects written in C there's always a lot of boiler plate code for releasing allocated resources. 
-There are two main ways to deal with these problems in different programmin languages:
+There are two main ways to deal with these problems in different programming languages:
 1. _Finally_ blocks 
 2. RAII
 
