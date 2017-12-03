@@ -1,0 +1,18 @@
+version: '{build}'
+
+platform:
+  - x64
+  
+platform:
+  - x64
+  
+configuration:
+  - Release
+  - Debug
+
+install:
+  - git submodule update --init --recursive
+
+build:
+  - cd build
+  - cmake -G "Visual Studio 15 2017 Win64" .
