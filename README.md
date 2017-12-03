@@ -39,3 +39,41 @@ void func(const char *str)
 No matter how many returns you have in your code, statements in  **DO_AT_EXIT** macro will be automatically done before returning from the function. All you need is 2 macros: 
 - **DO_AT_EXIT** to declare actions before return from the function
 - **RETURN** macros instead of **return** key word 
+
+You can specify your own macros based on DO_AT_EXIT for most cases. For case above:
+```C
+#include <malloc.h>
+#include "ceraii.h"
+
+#define FREE_AT_EXIT(pointer) \
+    DO_AT_EXIT(free(pointer);)
+    
+void func(const char *str)
+{
+    char *str_copy = (char*)malloc(strlen(str) + 1);
+    FREE_AT_EXIT(str_copy);  
+    
+    if (str_copy == NULL) 
+        RETURN();
+
+    /* some code with multiple returns */
+    
+    if (some_condition) {
+        /* --- */
+        RETURN();
+    } else if (another_condition) {
+        /* --- */
+        RETURN();
+    }
+
+    RETURN();
+}
+```
+After that it will be much easier to maintain code. For example it is needed to log all envocations of free at the end of the functions, all you need is add printf to the _FREE_AT_EXIT_ definition:
+```C
+#define FREE_AT_EXIT(pointer) \
+    DO_AT_EXIT(\
+        printf("Pointer %p is being freed\n", pointer);
+        free(pointer);\
+    )\
+```
