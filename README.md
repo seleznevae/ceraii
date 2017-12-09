@@ -153,6 +153,7 @@ Output is:
 **CERAII** implementation is based on C long jumps. Therefore you should keep in mind:
 1. Variables used inside **DO_AT_SCOPE_EXIT** macro shouldn't be changed from this macro usage till **RETURN** macro. If they are changed they should be declared volatile, otherwise their values will be indeterminate at the moment of execution before returning from the function. Also if when **DO_AT_SCOPE_EXIT** was called, a VLA (Variable-length array) or another variably-modified type variable was in scope and control left that scope, then it will be undefined behavior. See http://en.cppreference.com/w/c/program/setjmp for details. Examples of correct usage:
 ```C
+/* No need to declare pi volatile. Because it is not modified after DO_AT_EXIT */
 int *pi = (int*)malloc(sizeof(int));
 DO_AT_EXIT(free(pi));
 
@@ -173,7 +174,7 @@ RETURN;
 
 # Defining custom macros
 
-For the most frequent cases of resource releasing it is preferred to define your own macros based on DO_AT_EXIT. 
+**DO_AT_EXIT** is so verbose on purpose so that it clear what it does. However if your prefer more fashionable names (like "defer") you can wrap **CERAII** and redefined them. Moreover for the most frequent cases of resource releasing it is preferred to define your own macros based on DO_AT_EXIT. 
 Here are some examples:
 ```C
 #include <malloc.h>
