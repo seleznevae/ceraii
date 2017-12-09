@@ -169,7 +169,7 @@ DO_AT_EXIT(free(ps));
 free(ps);
 *ps = (short*)malloc(sizeof(short));
 
-RETURN;
+RETURN();
 ```
 
 # Defining custom macros
