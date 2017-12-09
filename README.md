@@ -8,8 +8,10 @@ In software projects written in C there's always a lot of boiler plate code for 
 There are two main ways to deal with these problems in different programming languages:
 1. _Finally_ blocks 
 2. RAII
+3. Deferred functions
 
-The goal of **CERAII** is in some sense to combine these two methods: releasing code should be near code that allocates resources and it should be explicit for anybody who reads the code how resources are released. 
+The goal of **CERAII** is primarily to implement deferred functions as they seems to be closer to C style programming. With deferred functions it should be obvious for anybody who reads the code how resources are released. 
+
 Example of code with CERAII:
 
 ```C
@@ -40,6 +42,134 @@ int func()
 No matter how many returns you have in your code, statements in  **DO_AT_EXIT** macro will be automatically done before returning from the function. All you need is 2 macros: 
 - **DO_AT_EXIT** to declare actions before return from the function
 - **RETURN** macros instead of **return** key word 
+
+# Differences with **go defer**
+
+In **go** a deferred function's arguments are evaluated when the defer statement is evaluated. Therefore in **go** the deferred call will print "0" after the function returns:
+```go
+func a() {
+    i := 0
+    defer fmt.Println(i)
+    i++
+    return
+}
+```
+Expressions in **DO_AT_EXIT** are evaluated at the moment of **RETURN**. Therefore this function will print "1" after the function returns:
+```C
+int not_like_go()
+{
+    volatile int i = 0;
+    DO_AT_EXIT(  printf("%d\n", i);   );
+    
+    i++;
+    return (0);
+}
+```
+
+# Macros usage
+
+**DO_AT_EXIT** and **RETURN** can be used in freely used in contidional clauses, switch statements, recursive functions:
+
+```C
+#include <stdio.h>
+#include "ceraii.h"
+
+int factorial(int value)
+{
+    printf(" Factorial(%d) begin\n", value);
+    DO_AT_EXIT(printf(" Factorial(%d) end\n", value););
+
+    printf("   Factorial body\n");
+    if (value == 0 || value == 1)
+        RETURN(1);
+
+    RETURN(value * factorial(value - 1));
+}
+
+int conditional(int value)
+{
+    if (value) {
+        DO_AT_EXIT(printf(" Condition was true\n"););
+    } else {
+        DO_AT_EXIT(printf(" Condition was false\n"););
+    }
+
+    printf("   Conditional function body\n");
+    RETURN(1);
+}
+
+int switch_case(int value)
+{
+    switch (value) {
+        case 1: DO_AT_EXIT(printf(" Value = 1\n");); break;
+        case 2: DO_AT_EXIT(printf(" Value = 2\n");); break;
+        default: DO_AT_EXIT(printf(" Value is default\n");); break;
+    }
+
+    printf("   Switch function body\n");
+    RETURN(1);
+}
+
+int main()
+{
+    printf("===== Example of recursive function with CERAII =====\n");
+    factorial(3);
+
+    printf("\n===== Example of CERAII macros in conditional statements =====\n");
+    conditional(1);
+
+    printf("\n===== Example of CERAII macros in switch statements =====\n");
+    switch_case(3);
+    switch_case(1);
+
+    RETURN(0);
+}
+```
+Output is:
+```
+===== Example of recursive function with CERAII =====
+ Factorial(3) begin
+   Factorial body
+ Factorial(2) begin
+   Factorial body
+ Factorial(1) begin
+   Factorial body
+ Factorial(1) end
+ Factorial(2) end
+ Factorial(3) end
+
+===== Example of CERAII macros in conditional statements =====
+   Conditional function body
+ Condition was true
+
+===== Example of CERAII macros in switch statements =====
+   Switch function body
+ Value is default
+   Switch function body
+ Value = 1
+```
+
+# Pitfalls
+**CERAII** implementation is based on C long jumps. Therefore you should keep in mind:
+1. Variables used inside **DO_AT_SCOPE_EXIT** macro shouldn't be changed from this macro usage till **RETURN** macro. If they are changed they should be declared volatile, otherwise their values will be indeterminate at the moment of execution before returning from the function. Also if when **DO_AT_SCOPE_EXIT** was called, a VLA (Variable-length array) or another variably-modified type variable was in scope and control left that scope, then it will be undefined behavior. See http://en.cppreference.com/w/c/program/setjmp for details. Examples of correct usage:
+```C
+int *pi = (int*)malloc(sizeof(int));
+DO_AT_EXIT(free(pi));
+
+/* Some code that doesn't modify pi. */
+*pi = 3;
+*pi += *pi;
+...
+
+/* ps should be defined as volatile because lately it would be changed */
+volatile short *ps = (short*)malloc(sizeof(short)); 
+DO_AT_EXIT(free(ps));
+
+free(ps);
+*ps = (short*)malloc(sizeof(short));
+
+RETURN;
+```
 
 # Defining custom macros
 
