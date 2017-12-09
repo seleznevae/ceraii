@@ -56,13 +56,13 @@ func a() {
 ```
 Expressions in **DO_AT_EXIT** are evaluated at the moment of **RETURN**. Therefore this function will print "1" after the function returns:
 ```C
-int not_like_go()
+void not_like_go()
 {
     volatile int i = 0;
     DO_AT_EXIT(  printf("%d\n", i);   );
     
     i++;
-    return (0);
+    RETURN();
 }
 ```
 
