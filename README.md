@@ -43,7 +43,7 @@ No matter how many returns you have in your code, statements in  **DO_AT_EXIT** 
 - **DO_AT_EXIT** to declare actions before return from the function
 - **RETURN** macros instead of **return** key word 
 
-# Differences with **go defer**
+# Differences with **"defer"** in golang
 
 In **go** a deferred function's arguments are evaluated when the defer statement is evaluated. Therefore in **go** the deferred call will print "0" after the function returns:
 ```go
