@@ -37,6 +37,14 @@ int switch_case(int value)
     RETURN(1);
 }
 
+int not_like_go()
+{
+    volatile int i = 0;
+    DO_AT_EXIT(printf("%d\n", i););
+    i++;
+    return (0);
+}
+
 int main(int argc, char *argv[])
 {
     (void)argc;
@@ -52,6 +60,8 @@ int main(int argc, char *argv[])
     printf("\n===== Example of CERAII macros in switch statements =====\n");
     switch_case(3);
     switch_case(1);
+
+    not_like_go();
 
     RETURN(0);
 }

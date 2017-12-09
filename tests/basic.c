@@ -11,6 +11,20 @@ int marker1 = 0;
 int marker2 = 0;
 int marker3 = 0;
 
+
+void base_void_return()
+{
+    assert(marker1 == 0);
+    DO_AT_EXIT(marker1 = 1;);
+
+    /* Imitating some work */
+    int i = 0;
+    for (i = 0; i < 10; ++i)
+        ;
+
+    RETURN();
+}
+
 int base_return_10()
 {
     assert(marker1 == 0);
@@ -163,7 +177,6 @@ int base_switch_return_10(int switch_value)
 
 
 
-
 int main(int argc, char *argv[])
 {
     (void)argc;
@@ -178,6 +191,14 @@ int main(int argc, char *argv[])
     result = base_return_10();
     assert(result == 10);
     assert(marker1 == 1);
+
+    /*
+     *  Base check function returning void
+     */
+    marker1 = 0;
+    base_void_return();
+    assert(marker1 == 1);
+
 
     /*
      *  Base check that DO_AT_EXIT is executed after evaluation of statement in RETURN
@@ -289,6 +310,7 @@ int main(int argc, char *argv[])
     assert(marker2 == 0);
     assert(marker3 == 3);
 
-    return 0;
+
+    RETURN(0);
 }
 

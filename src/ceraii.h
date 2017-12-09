@@ -158,7 +158,7 @@ do {\
 */
 #ifdef CERAII_ACTIONS_BEFORE_RETURN_EXPRESSION
 
-#define RETURN_(return_value, index_name, return_name) \
+#define RETURN_1_(return_value, index_name, return_name) \
     do { \
         int index_name = (*get_raii_objects_counter())++; \
         FILL_SIGNATURE((*get_stack_item(index_name)).signature_); \
@@ -171,12 +171,12 @@ do {\
         GO_TO_PREVIOS_LABEL_OR_RETURN_TO_CALLER((*get_stack_item(*get_raii_objects_counter())));\
     } while(0)
 
-#define RETURN(return_value) \
-    RETURN_(return_value, UNIQUE_RAII_NAME(index_eraii), UNIQUE_RAII_NAME(return_eraii))
+#define RETURN_1(return_value) \
+    RETURN_1_(return_value, UNIQUE_RAII_NAME(index_eraii), UNIQUE_RAII_NAME(return_eraii))
 
 #else
 
-#define RETURN_(return_value, index_name, return_name) \
+#define RETURN_1_(return_value, index_name, return_name) \
     do { \
         CERAII_TYPE_OF(return_value) return_name = (return_value); \
         int index_name = (*get_raii_objects_counter())++; \
@@ -190,13 +190,33 @@ do {\
         GO_TO_PREVIOS_LABEL_OR_RETURN_TO_CALLER((*get_stack_item(*get_raii_objects_counter())));\
     } while(0)
 
-#define RETURN(return_value) \
-    RETURN_(return_value, UNIQUE_RAII_NAME(index_eraii), UNIQUE_RAII_NAME(return_eraii))
+#define RETURN_1(return_value) \
+    RETURN_1_(return_value, UNIQUE_RAII_NAME(index_eraii), UNIQUE_RAII_NAME(return_eraii))
 
 #endif //CERAII_ACTIONS_BEFORE_RETURN_EXPRESSION
 
 
 
+#define RETURN_0_(index_name, return_name) \
+    do { \
+        int index_name = (*get_raii_objects_counter())++; \
+        FILL_SIGNATURE((*get_stack_item(index_name)).signature_); \
+        (*get_stack_item(index_name)).index_ = index_name; \
+        if (setjmp(get_stack_item(index_name)->env_)) {\
+            return; \
+        } \
+        memcpy(get_return_caller(), get_stack_item(index_name), sizeof(struct stack_return_item)); \
+        (*get_raii_objects_counter())--; \
+        GO_TO_PREVIOS_LABEL_OR_RETURN_TO_CALLER((*get_stack_item(*get_raii_objects_counter())));\
+    } while(0)
+
+#define RETURN_0() \
+    RETURN_0_( UNIQUE_RAII_NAME(index_eraii), UNIQUE_RAII_NAME(return_eraii))
+
+
+#define RETURN_N_(fn,...) RETURN_N(fn,##__VA_ARGS__,2,1,0)(__VA_ARGS__)
+#define RETURN_N(fn,n0,n1,n,...) RETURN_##n
+#define RETURN(...) RETURN_N_(myfunc,##__VA_ARGS__)
 
 #ifdef __cplusplus
 }
