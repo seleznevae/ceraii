@@ -1,4 +1,4 @@
-# ceraii (C Explicit RAII) (WIP - Work in progress)
+# ceraii (C Explicit RAII)
 [![Build Status](https://travis-ci.org/seleznevae/ceraii.svg?branch=master)](https://travis-ci.org/seleznevae/ceraii)
 [![Build status](https://ci.appveyor.com/api/projects/status/9lm1crskqmui1uvw?svg=true)](https://ci.appveyor.com/project/seleznevae/ceraii)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
