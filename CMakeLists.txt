@@ -1,7 +1,7 @@
 cmake_minimum_required (VERSION 2.6)
 project (CERAII)
 
-option(CERAII_TEST_BUILD "Test build with sanitizers" ON)
+option(CERAII_TEST_BUILD "Test build with sanitizers and small library stack size" ON)
 option(CERAII_GCC_BUILD "Build with gcc" ON)
 option(CERAII_MSVC_BUILD "Build with msvc" OFF)
 option(CERAII_PERF_OPTIMIZED_BUILD "Build with turned on optimizations" OFF)
@@ -36,6 +36,8 @@ endif(CERAII_PERF_OPTIMIZED_BUILD)
 
 if(CERAII_TEST_BUILD)
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fsanitize=address")
+    add_definitions(-DCERAII_CONF_ENV_STACK_SIZE=2)
+    add_definitions(-DCERAII_CONF_ALLOC_ENV_STACK_INITIAL_CAPACITY=10)
     if(CERAII_GCC_BUILD)
         target_link_libraries(test_multithread asan)
         target_link_libraries(test_basic asan)
@@ -51,4 +53,6 @@ endif(CERAII_COVERALLS_BUILD)
 if(CERAII_DO_BEFORE_EXIT)
     add_definitions(-DCERAII_ACTIONS_BEFORE_RETURN_EXPRESSION)
 endif(CERAII_DO_BEFORE_EXIT)
+
+
 

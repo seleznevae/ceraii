@@ -7,9 +7,9 @@
 
 
 
-int marker1 = 0;
-int marker2 = 0;
-int marker3 = 0;
+static int marker1 = 0;
+static int marker2 = 0;
+static int marker3 = 0;
 
 
 void base_void_return()
@@ -99,6 +99,18 @@ int base_multiple_return_10()
     /* Imitating some work */
     for (i = 0; i < 10; ++i)
         ;
+
+    DO_AT_EXIT(marker3 = 25/*dummy*/;);
+    /* Imitating some work */
+    for (i = 0; i < 10; ++i)
+        ;
+
+    DO_AT_EXIT(marker3 = 33/*dummy*/;);
+    /* Imitating some work */
+    for (i = 0; i < 10; ++i)
+        ;
+
+
 
     RETURN(i);
 }

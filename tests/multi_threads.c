@@ -10,9 +10,9 @@
 
 #define NUMBER_OF_ITERATIONS  1000000
 
-int marker1[3] = {0};
-int marker2[3] = {0};
-int marker3[3] = {0};
+static int marker1[3] = {0};
+static int marker2[3] = {0};
+static int marker3[3] = {0};
 
 
 int base_multiple_return_100(int thread_num)
