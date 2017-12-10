@@ -68,7 +68,7 @@ void not_like_go()
 
 # Macros usage
 
-**DO_AT_EXIT** and **RETURN** can be used in freely used in contidional clauses, switch statements, recursive functions:
+**DO_AT_EXIT** and **RETURN** can be used freely in conditional clauses, switch statements, recursive functions:
 
 ```C
 #include <stdio.h>
@@ -148,6 +148,9 @@ Output is:
    Switch function body
  Value = 1
 ```
+# Installation
+
+To use **DO_AT_SCOPE_EXIT** and **RETURN** macro include _ceraii.h_ in your source code. Also it necessary to compile _ceraii.c_ and link with other object files during linkage process.
 
 # Pitfalls
 **CERAII** implementation is based on C long jumps. Therefore you should keep in mind:
@@ -208,7 +211,7 @@ int func()
     RETURN(0);
 }
 ```
-After that it will be much easier to maintain code. For example if it is needed to log all envocations of free at the end of the functions, all you need is add _printf_ to the _FREE_AT_EXIT_ definition:
+After that it will be much easier to maintain code. For example if it is needed to log all invocations of free at the end of the functions, all you need is to add _printf_ to the _FREE_AT_EXIT_ definition:
 ```C
 #define FREE_AT_EXIT(pointer) \
     DO_AT_EXIT(\
