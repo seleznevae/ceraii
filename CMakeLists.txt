@@ -1,7 +1,7 @@
 cmake_minimum_required (VERSION 3.0)
 project (CERAII)
 
-option(CERAII_TEST_BUILD "Test build with sanitizers and small library stack size" ON)
+option(CERAII_TEST_BUILD "Test build with sanitizers and small library stack size" OFF)
 option(CERAII_COVERALLS_BUILD "Build for coveralls" OFF)
 option(CERAII_DO_BEFORE_EXIT "Doing actions before evaluating return expression" OFF)
 
