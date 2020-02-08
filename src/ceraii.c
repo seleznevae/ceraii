@@ -135,7 +135,7 @@ static int vector_push (asock_vector_t* vector, const void* item)
     }
 
     ptrdiff_t deviation = vector->m_size * vector->m_item_size;
-    memcpy(vector->m_data + deviation, item, vector->m_item_size);
+    memcpy((char *)vector->m_data + deviation, item, vector->m_item_size);
 
     ++(vector->m_size);
 
@@ -148,7 +148,7 @@ static void *vector_at(asock_vector_t *vector, size_t index)
     if (index >= vector->m_size)
         return NULL;
 
-    return vector->m_data + index * vector->m_item_size;
+    return (char *)vector->m_data + index * vector->m_item_size;
 }
 
 /* ----------------------------------------------------------------------- */
