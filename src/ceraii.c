@@ -180,7 +180,7 @@ struct stack_return_item* get_stack_item(int index)
         on_exit(stack_items_vector_destructor, stack_items_vector);
     }
 
-    while (index >= CERAII_ENV_STACK_SIZE + vector_size(stack_items_vector)) {
+    while (index >= CERAII_ENV_STACK_SIZE + (int)vector_size(stack_items_vector)) {
         struct stack_return_item dummy;
         memset(&dummy, 0, sizeof(dummy));
         int status = vector_push(stack_items_vector, &dummy);

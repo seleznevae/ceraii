@@ -34,7 +34,7 @@ script:
 
   # Basic build
   - cd build
-  - cmake .. -DCERAII_TEST_BUILD=ON -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DCMAKE_C_FLAGS="-Wall -Wextra"
+  - cmake .. -DCERAII_TEST_BUILD=ON -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DCMAKE_C_FLAGS="-Wall -Wextra -Werror"
   - cmake --build . --target all 
   - ls
   - ./test_basic
@@ -44,7 +44,7 @@ script:
   - cd ..  
   - rm -r build/*
   - cd build
-  - cmake .. -DCERAII_TEST_BUILD=OFF -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DCMAKE_C_FLAGS="-Wall -Wextra"
+  - cmake .. -DCERAII_TEST_BUILD=OFF -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DCMAKE_C_FLAGS="-Wall -Wextra -Werror"
   - cmake --build . --target all 
   - ls
   - ./test_basic
@@ -56,7 +56,7 @@ script:
     cd ..  ;
     rm -r build/* ;
     cd build ;
-    cmake .. -DCERAII_COVERALLS_BUILD=ON -DCERAII_TEST_BUILD=ON -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_FLAGS="-Wall -Wextra" ;
+    cmake .. -DCERAII_COVERALLS_BUILD=ON -DCERAII_TEST_BUILD=ON -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_FLAGS="-Wall -Wextra -Werror" ;
     cmake --build . --target all ;
     ls ;
     ./test_basic ;
