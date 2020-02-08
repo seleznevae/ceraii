@@ -30,6 +30,8 @@ SOFTWARE.
 #include <stdlib.h>
 #include <assert.h>
 
+#define MAYBE_UNUSED(arg) (void)(arg)
+
 #if (defined(CERAII_GCC_COMPILER) || defined(CERAII_CLANG_COMPILER))
 
 #include <pthread.h>
@@ -78,6 +80,7 @@ void* thread_1_func(void *arg)
         marker2[thread_nuber] = 0;
         marker3[thread_nuber] = 0;
         int result = base_multiple_return_100(thread_nuber);
+        MAYBE_UNUSED(result);
         assert(result == 100);
         assert(marker1[thread_nuber] = 1);
         assert(marker3[thread_nuber] = 2);
@@ -96,6 +99,7 @@ void* thread_2_func(void *arg)
         marker2[thread_nuber] = 0;
         marker3[thread_nuber] = 0;
         int result = base_multiple_return_100(thread_nuber);
+        MAYBE_UNUSED(result);
         assert(result == 100);
         assert(marker1[thread_nuber] = 1);
         assert(marker3[thread_nuber] = 2);
@@ -114,6 +118,7 @@ void* thread_3_func(void *arg)
         marker2[thread_nuber] = 0;
         marker3[thread_nuber] = 0;
         int result = base_multiple_return_100(thread_nuber);
+        MAYBE_UNUSED(result);
         assert(result == 100);
         assert(marker1[thread_nuber] = 1);
         assert(marker3[thread_nuber] = 2);
@@ -132,6 +137,7 @@ void* thread_func(void *arg)
         marker2[thread_number] = 0;
         marker3[thread_number] = 0;
         int result = base_multiple_return_100(thread_number);
+        MAYBE_UNUSED(result);
         assert(result == 100);
         assert(marker1[thread_number] = 1);
         assert(marker3[thread_number] = 2);
@@ -142,8 +148,8 @@ void* thread_func(void *arg)
 
 int main(int argc, char *argv[])
 {
-    (void)argc;
-    (void)argv;
+    MAYBE_UNUSED(argc);
+    MAYBE_UNUSED(argv);
 
     /*
      * Test threads that run independent functions with CERAII macros
@@ -215,8 +221,8 @@ int main(int argc, char *argv[])
 #else
 int main(int argc, char *argv[])
 {
-    (void)argc;
-    (void)argv;
+    MAYBE_UNUSED(argc);
+    MAYBE_UNUSED(argv);
 
     return (0);
 }
