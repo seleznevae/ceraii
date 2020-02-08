@@ -7,21 +7,29 @@ option(CERAII_DO_BEFORE_EXIT "Doing actions before evaluating return expression"
 
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall")
 
 include_directories(src)
 set(CERAII_SOURCES src/ceraii.c)
 
-add_executable(test_basic tests/basic.c ${CERAII_SOURCES})
-add_executable(test_multithread tests/multi_threads.c ${CERAII_SOURCES})
+add_executable(test_basic
+    tests/basic.c
+    ${CERAII_SOURCES})
+
+add_executable(test_multithread
+    tests/multi_threads.c
+    ${CERAII_SOURCES})
 if (NOT CMAKE_C_COMPILER_ID STREQUAL "MSVC")
     target_link_libraries(test_multithread pthread)
 endif()
 
-add_executable(example examples/example.c ${CERAII_SOURCES})
+add_executable(example
+    examples/example.c
+    ${CERAII_SOURCES})
 
-message(STATUS "CMAKE_C_FLAGS = ${CMAKE_C_FLAGS}")
 
+###########################################################
+# Build options
+###########################################################
 if(CERAII_TEST_BUILD)
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fsanitize=address")
     add_definitions(-DCERAII_CONF_ENV_STACK_SIZE=2)
@@ -31,8 +39,6 @@ if(CERAII_TEST_BUILD)
         target_link_libraries(test_basic asan)
     endif()
 endif()
-
-
 
 if(CERAII_COVERALLS_BUILD) #for coveralls
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -fprofile-arcs -ftest-coverage")
