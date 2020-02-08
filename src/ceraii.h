@@ -43,9 +43,7 @@ SOFTWARE.
 #endif
 
 #ifdef CERAII_MICROSOFT_COMPILER
-#ifndef CERAII_ACTIONS_BEFORE_RETURN_EXPRESSION
-#error ceraii: Doing actions after evaluating return expression is available onlu in gcc and clang
-#endif
+#define CERAII_ACTIONS_BEFORE_RETURN_EXPRESSION
 #endif
 
 #ifdef __cplusplus
