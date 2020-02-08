@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 2.6)
+cmake_minimum_required (VERSION 3.0)
 project (CERAII)
 
 option(CERAII_TEST_BUILD "Test build with sanitizers and small library stack size" ON)
@@ -7,24 +7,19 @@ option(CERAII_DO_BEFORE_EXIT "Doing actions before evaluating return expression"
 
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
-
-include_directories(src)
-set(CERAII_SOURCES src/ceraii.c)
+add_subdirectory(src)
 
 add_executable(test_basic
-    tests/basic.c
-    ${CERAII_SOURCES})
+    tests/basic.c)
+target_link_libraries(test_basic PRIVATE ceraii)
 
 add_executable(test_multithread
-    tests/multi_threads.c
-    ${CERAII_SOURCES})
-if (NOT CMAKE_C_COMPILER_ID STREQUAL "MSVC")
-    target_link_libraries(test_multithread pthread)
-endif()
+    tests/multi_threads.c)
+target_link_libraries(test_multithread PRIVATE ceraii $<$<NOT:$<C_COMPILER_ID:MSVC>>:pthread> )
 
 add_executable(example
-    examples/example.c
-    ${CERAII_SOURCES})
+    examples/example.c)
+target_link_libraries(example PRIVATE ceraii)
 
 
 ###########################################################
@@ -35,8 +30,8 @@ if(CERAII_TEST_BUILD)
     add_definitions(-DCERAII_CONF_ENV_STACK_SIZE=2)
     add_definitions(-DCERAII_CONF_ALLOC_ENV_STACK_INITIAL_CAPACITY=10)
     if (CMAKE_C_COMPILER_ID STREQUAL "GNU")
-        target_link_libraries(test_multithread asan)
-        target_link_libraries(test_basic asan)
+        target_link_libraries(test_multithread PRIVATE asan)
+        target_link_libraries(test_basic PRIVATE asan)
     endif()
 endif()
 
