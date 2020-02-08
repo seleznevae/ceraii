@@ -212,14 +212,15 @@ int base_switch_return_10(int switch_value)
     RETURN(i);
 }
 
-
+#define MAYBE_UNUSED(arg) (void)(arg)
 
 int main(int argc, char *argv[])
 {
-    (void)argc;
-    (void)argv;
+    MAYBE_UNUSED(argc);
+    MAYBE_UNUSED(argv);
 
     int result = 0;
+    MAYBE_UNUSED(result);
 
     /*
      *  Base check
