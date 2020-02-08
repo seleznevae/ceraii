@@ -7,6 +7,10 @@ option(CERAII_DO_BEFORE_EXIT "Doing actions before evaluating return expression"
 
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
+if(CERAII_DO_BEFORE_EXIT)
+    add_definitions(-DCERAII_ACTIONS_BEFORE_RETURN_EXPRESSION)
+endif()
+
 add_subdirectory(src)
 
 add_executable(test_basic
@@ -22,9 +26,6 @@ add_executable(example
 target_link_libraries(example PRIVATE ceraii)
 
 
-###########################################################
-# Build options
-###########################################################
 if(CERAII_TEST_BUILD)
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fsanitize=address")
     add_definitions(-DCERAII_CONF_ENV_STACK_SIZE=2)
@@ -39,9 +40,7 @@ if(CERAII_COVERALLS_BUILD) #for coveralls
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -fprofile-arcs -ftest-coverage")
 endif()
 
-if(CERAII_DO_BEFORE_EXIT)
-    add_definitions(-DCERAII_ACTIONS_BEFORE_RETURN_EXPRESSION)
-endif()
+
 
 
 
