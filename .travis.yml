@@ -5,8 +5,8 @@ matrix:
     - os: linux
       compiler: gcc
       env: 
-        - COVERAGE=ON
         - BUILD_TYPE=Debug
+        - COVERAGE=ON
       before_script:
         - pip install --user cpp-coveralls
       after_success:
